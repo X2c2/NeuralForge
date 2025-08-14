@@ -44,6 +44,8 @@ const NeuralForgeApp = () => {
   const [showQuickShare, setShowQuickShare] = useState(false);
   const [communityPosts, setCommunityPosts] = useState([]);
   const [notifications, setNotifications] = useState(3);
+  const [userPrompt, setUserPrompt] = useState('');
+  const [generatedResult, setGeneratedResult] = useState(null);
 
   // Sample data
   const aiTools = [
@@ -113,12 +115,39 @@ const NeuralForgeApp = () => {
   }, []);
 
   const handleGenerate = async () => {
+    if (!userPrompt.trim()) {
+      alert('Please enter a prompt');
+      return;
+    }
+
     setIsGenerating(true);
-    // Simulate AI generation
-    setTimeout(() => {
-      setIsGenerating(false);
+    setGeneratedResult(null);
+
+    try {
+      const response = await fetch('/api/ai/generate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          prompt: userPrompt,
+          model: selectedTool
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      setGeneratedResult(result);
       setShowQuickShare(true);
-    }, 3000);
+    } catch (error) {
+      console.error('Generation failed:', error);
+      alert('Failed to generate content. Please try again.');
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   const handleQuickShare = (type) => {
@@ -301,16 +330,32 @@ const NeuralForgeApp = () => {
                       className="w-full bg-transparent text-white placeholder-gray-400 resize-none outline-none"
                       placeholder={`Enter your ${selectedTool === 'image' ? 'image description' : selectedTool === 'video' ? 'video concept' : selectedTool === 'code' ? 'coding request' : 'prompt'}...`}
                       rows={3}
+                      value={userPrompt}
+                      onChange={(e) => setUserPrompt(e.target.value)}
                     />
                   </div>
                   
                   {/* Generation Area */}
-                  <div className="flex-1 flex items-center justify-center">
+                  <div className="flex-1 flex items-center justify-center p-4">
                     {isGenerating ? (
                       <div className="text-center">
                         <div className="w-16 h-16 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
                         <h4 className="text-white font-medium mb-2">Creating with AI...</h4>
                         <p className="text-gray-400">Using {aiTools.find(t => t.id === selectedTool)?.name}</p>
+                      </div>
+                    ) : generatedResult ? (
+                      <div className="w-full h-full overflow-auto">
+                        <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+                          <div className="flex items-center justify-between mb-3">
+                            <h4 className="text-white font-medium">Generated Result</h4>
+                            <button className="p-1 hover:bg-white/10 rounded transition-colors">
+                              <Copy className="w-4 h-4 text-gray-400 hover:text-white" />
+                            </button>
+                          </div>
+                          <div className="text-gray-300 whitespace-pre-wrap text-sm">
+                            {generatedResult.content || generatedResult.response || JSON.stringify(generatedResult, null, 2)}
+                          </div>
+                        </div>
                       </div>
                     ) : (
                       <div className="text-center">
