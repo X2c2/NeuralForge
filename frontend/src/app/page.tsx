@@ -455,10 +455,16 @@ export default function NeuralForgeApp() {
               >
                 <MessageCircle className="w-5 h-5 text-blue-300" />
               </button>
-              <button 
-                onClick={() => setShowQuickShare(false)}
-                className="w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-all duration-200 ml-2"
-              >
-                <X className="w-4 h-4 text-gray-400" />
-              </button>
-            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Floating Action Button for Quick Access */}
+      <div className="fixed bottom-6 right-6 z-40">
+        <button className="w-14 h-14 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white shadow-lg shadow-purple-500/25 hover:shadow-xl hover:shadow-purple-500/40 transition-all duration-300 transform hover:scale-110">
+          <Plus className="w-6 h-6" />
+        </button>
+      </div>
+    </div>
+  );
+}
