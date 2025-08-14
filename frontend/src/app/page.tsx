@@ -1,7 +1,61 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Sparkles, Image, Video, Code, MessageCircle, Zap, Users, Share2, Heart, Eye, Download, Upload, Crown, Settings, Bell, Search, Filter, Plus, Star, BarChart3, Palette, Music, Globe, Brain, Rocket, ChevronDown, X, Send, ThumbsUp, Bookmark, MoreHorizontal, Play, Pause, Copy, ExternalLink } from 'lucide-react';
+import { 
+  Sparkles, 
+  Image, 
+  Video, 
+  Code, 
+  MessageCircle, 
+  Zap, 
+  Users, 
+  Share2, 
+  Heart, 
+  Eye, 
+  Download, 
+  Upload, 
+  Crown, 
+  Bell, 
+  Search, 
+  Filter, 
+  Plus, 
+  Star, 
+  BarChart3, 
+  Music, 
+  Brain, 
+  Rocket, 
+  X, 
+  Bookmark, 
+  MoreHorizontal 
+} from 'lucide-react';
+
+interface AITool {
+  id: string;
+  name: string;
+  icon: any;
+  color: string;
+  desc: string;
+  gradient: string;
+}
+
+interface Post {
+  id: number;
+  user: {
+    name: string;
+    username: string;
+    avatar: string;
+  };
+  title: string;
+  type: string;
+  likes: number;
+  views: number;
+  shares: number;
+  description: string;
+  model: string;
+  tags: string[];
+  timestamp: string;
+  gradient: string;
+}
 
 export default function NeuralForgeApp() {
   const [activeTab, setActiveTab] = useState('workspace');
@@ -10,17 +64,58 @@ export default function NeuralForgeApp() {
   const [showQuickShare, setShowQuickShare] = useState(false);
   const [notifications, setNotifications] = useState(3);
 
-  // Sample data
-  const aiTools = [
-    { id: 'chat', name: 'AI Chat', icon: MessageCircle, color: 'blue', desc: 'GPT-4o, Claude 3.7, Gemini', gradient: 'from-blue-500 to-cyan-500' },
-    { id: 'image', name: 'Image Gen', icon: Image, color: 'purple', desc: 'DALL-E 3, Midjourney, SD', gradient: 'from-purple-500 to-pink-500' },
-    { id: 'video', name: 'Video Gen', icon: Video, color: 'red', desc: 'Sora, RunwayML, Pika', gradient: 'from-red-500 to-orange-500' },
-    { id: 'code', name: 'Code Gen', icon: Code, color: 'green', desc: 'GitHub Copilot, DeepSeek', gradient: 'from-green-500 to-emerald-500' },
-    { id: 'voice', name: 'Voice Gen', icon: Music, color: 'orange', desc: 'ElevenLabs, Azure Speech', gradient: 'from-orange-500 to-yellow-500' },
-    { id: 'analysis', name: 'Data Analysis', icon: BarChart3, color: 'indigo', desc: 'Python, R, SQL generation', gradient: 'from-indigo-500 to-purple-500' }
+  const aiTools: AITool[] = [
+    { 
+      id: 'chat', 
+      name: 'AI Chat', 
+      icon: MessageCircle, 
+      color: 'blue', 
+      desc: 'GPT-4o, Claude 3.7, Gemini', 
+      gradient: 'from-blue-500 to-cyan-500' 
+    },
+    { 
+      id: 'image', 
+      name: 'Image Gen', 
+      icon: Image, 
+      color: 'purple', 
+      desc: 'DALL-E 3, Midjourney, SD', 
+      gradient: 'from-purple-500 to-pink-500' 
+    },
+    { 
+      id: 'video', 
+      name: 'Video Gen', 
+      icon: Video, 
+      color: 'red', 
+      desc: 'Sora, RunwayML, Pika', 
+      gradient: 'from-red-500 to-orange-500' 
+    },
+    { 
+      id: 'code', 
+      name: 'Code Gen', 
+      icon: Code, 
+      color: 'green', 
+      desc: 'GitHub Copilot, DeepSeek', 
+      gradient: 'from-green-500 to-emerald-500' 
+    },
+    { 
+      id: 'voice', 
+      name: 'Voice Gen', 
+      icon: Music, 
+      color: 'orange', 
+      desc: 'ElevenLabs, Azure Speech', 
+      gradient: 'from-orange-500 to-yellow-500' 
+    },
+    { 
+      id: 'analysis', 
+      name: 'Data Analysis', 
+      icon: BarChart3, 
+      color: 'indigo', 
+      desc: 'Python, R, SQL generation', 
+      gradient: 'from-indigo-500 to-purple-500' 
+    }
   ];
 
-  const samplePosts = [
+  const samplePosts: Post[] = [
     {
       id: 1,
       user: { name: "Sarah Chen", username: "@sarahdesigns", avatar: "SC" },
@@ -68,7 +163,6 @@ export default function NeuralForgeApp() {
   const [currentPosts, setCurrentPosts] = useState(samplePosts);
 
   useEffect(() => {
-    // Simulate real-time updates
     const interval = setInterval(() => {
       if (Math.random() > 0.7) {
         setNotifications(prev => prev + 1);
@@ -79,7 +173,6 @@ export default function NeuralForgeApp() {
 
   const handleGenerate = async () => {
     setIsGenerating(true);
-    // Simulate AI generation
     setTimeout(() => {
       setIsGenerating(false);
       setShowQuickShare(true);
@@ -87,7 +180,7 @@ export default function NeuralForgeApp() {
   };
 
   const handleQuickShare = (type: string) => {
-    const newPost = {
+    const newPost: Post = {
       id: Date.now(),
       user: { name: "You", username: "@yourname", avatar: "Y" },
       title: `New ${type} creation`,
@@ -104,18 +197,9 @@ export default function NeuralForgeApp() {
     
     setCurrentPosts(prev => [newPost, ...prev]);
     setShowQuickShare(false);
-    
-    // Show success notification
-    const notification = document.createElement('div');
-    notification.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-pulse';
-    notification.textContent = '🚀 Shared to community!';
-    document.body.appendChild(notification);
-    setTimeout(() => {
-      if (notification.parentNode) {
-        document.body.removeChild(notification);
-      }
-    }, 3000);
   };
+
+  const selectedToolData = aiTools.find(t => t.id === selectedTool);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden">
@@ -123,24 +207,8 @@ export default function NeuralForgeApp() {
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -inset-10 opacity-30">
           <div className="absolute top-0 -left-4 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl animate-pulse"></div>
-          <div className="absolute top-0 -right-4 w-72 h-72 bg-yellow-500 rounded-full mix-blend-multiply filter blur-xl animate-pulse" style={{animationDelay: '2s'}}></div>
-          <div className="absolute -bottom-8 left-20 w-72 h-72 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl animate-pulse" style={{animationDelay: '4s'}}></div>
-        </div>
-        
-        {/* Floating particles */}
-        <div className="absolute inset-0">
-          {[...Array(50)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute w-1 h-1 bg-white rounded-full opacity-20 animate-pulse"
-              style={{
-                left: Math.random() * 100 + '%',
-                top: Math.random() * 100 + '%',
-                animationDelay: Math.random() * 5 + 's',
-                animationDuration: (Math.random() * 3 + 2) + 's'
-              }}
-            />
-          ))}
+          <div className="absolute top-0 -right-4 w-72 h-72 bg-yellow-500 rounded-full mix-blend-multiply filter blur-xl animate-pulse"></div>
+          <div className="absolute -bottom-8 left-20 w-72 h-72 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl animate-pulse"></div>
         </div>
       </div>
 
@@ -200,7 +268,6 @@ export default function NeuralForgeApp() {
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {activeTab === 'workspace' && (
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-            {/* AI Tools Sidebar */}
             <div className="lg:col-span-1">
               <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 shadow-xl">
                 <h3 className="text-lg font-semibold text-white mb-4 flex items-center">
@@ -234,7 +301,6 @@ export default function NeuralForgeApp() {
               </div>
             </div>
 
-            {/* Main Workspace */}
             <div className="lg:col-span-3">
               <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 shadow-xl">
                 <div className="flex justify-between items-center mb-6">
@@ -254,17 +320,16 @@ export default function NeuralForgeApp() {
                           Generating...
                         </div>
                       ) : (
-                        <>
-                          <Rocket className="w-4 h-4 inline mr-2" />
+                        <div className="flex items-center">
+                          <Rocket className="w-4 h-4 mr-2" />
                           Generate
-                        </>
+                        </div>
                       )}
                     </button>
                   </div>
                 </div>
                 
                 <div className="h-96 bg-black/20 rounded-xl border border-white/10 flex flex-col">
-                  {/* Prompt Input */}
                   <div className="p-4 border-b border-white/10">
                     <textarea 
                       className="w-full bg-transparent text-white placeholder-gray-400 resize-none outline-none"
@@ -273,18 +338,17 @@ export default function NeuralForgeApp() {
                     />
                   </div>
                   
-                  {/* Generation Area */}
                   <div className="flex-1 flex items-center justify-center">
                     {isGenerating ? (
                       <div className="text-center">
                         <div className="w-16 h-16 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
                         <h4 className="text-white font-medium mb-2">Creating with AI...</h4>
-                        <p className="text-gray-400">Using {aiTools.find(t => t.id === selectedTool)?.name}</p>
+                        <p className="text-gray-400">Using {selectedToolData?.name}</p>
                       </div>
                     ) : (
                       <div className="text-center">
-                        <div className={`w-16 h-16 bg-gradient-to-r ${aiTools.find(t => t.id === selectedTool)?.gradient} rounded-full flex items-center justify-center mx-auto mb-4 opacity-50`}>
-                          {React.createElement(aiTools.find(t => t.id === selectedTool)?.icon || Sparkles, { className: "w-8 h-8 text-white" })}
+                        <div className={`w-16 h-16 bg-gradient-to-r ${selectedToolData?.gradient} rounded-full flex items-center justify-center mx-auto mb-4 opacity-50`}>
+                          {selectedToolData && <selectedToolData.icon className="w-8 h-8 text-white" />}
                         </div>
                         <h4 className="text-white font-medium mb-2">Ready to Create</h4>
                         <p className="text-gray-400">Enter a prompt and click Generate</p>
@@ -352,7 +416,7 @@ export default function NeuralForgeApp() {
                   </div>
                   
                   <div className="p-4">
-                    <p className="text-gray-300 text-sm mb-4 line-clamp-3">{post.description}</p>
+                    <p className="text-gray-300 text-sm mb-4">{post.description}</p>
                     
                     <div className="flex flex-wrap gap-2 mb-4">
                       {post.tags.map((tag, index) => (
@@ -425,7 +489,6 @@ export default function NeuralForgeApp() {
         )}
       </div>
 
-      {/* Quick Share Bottom Bar */}
       {showQuickShare && (
         <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50 animate-bounce">
           <div className="bg-black/60 backdrop-blur-xl border border-white/20 rounded-2xl px-6 py-4 flex items-center space-x-4 shadow-2xl">
@@ -455,11 +518,17 @@ export default function NeuralForgeApp() {
               >
                 <MessageCircle className="w-5 h-5 text-blue-300" />
               </button>
+              <button 
+                onClick={() => setShowQuickShare(false)}
+                className="w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-all duration-200 ml-2"
+              >
+                <X className="w-4 h-4 text-gray-400" />
+              </button>
+            </div>
           </div>
         </div>
       )}
 
-      {/* Floating Action Button for Quick Access */}
       <div className="fixed bottom-6 right-6 z-40">
         <button className="w-14 h-14 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white shadow-lg shadow-purple-500/25 hover:shadow-xl hover:shadow-purple-500/40 transition-all duration-300 transform hover:scale-110">
           <Plus className="w-6 h-6" />
