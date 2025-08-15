@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { generateContent, GenerateRequest } from '../lib/api';
 import { 
   SparklesIcon as Sparkles,
   PhotoIcon as Image,
@@ -44,8 +45,8 @@ const NeuralForgeApp = () => {
   const [showQuickShare, setShowQuickShare] = useState(false);
   const [communityPosts, setCommunityPosts] = useState([]);
   const [notifications, setNotifications] = useState(3);
-  const [userPrompt, setUserPrompt] = useState('');
-  const [generatedResult, setGeneratedResult] = useState(null);
+  const [prompt, setPrompt] = useState('');
+  const [generatedContent, setGeneratedContent] = useState('');
 
   // Sample data
   const aiTools = [
@@ -115,33 +116,22 @@ const NeuralForgeApp = () => {
   }, []);
 
   const handleGenerate = async () => {
-    if (!userPrompt.trim()) {
-      alert('Please enter a prompt');
-      return;
-    }
-
+    if (!prompt.trim()) return;
+    
     setIsGenerating(true);
-    setGeneratedResult(null);
-
+    setGeneratedContent('');
+    
     try {
-      const response = await fetch('/api/ai/generate', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          prompt: userPrompt,
-          model: selectedTool
-        })
+      const response = await generateContent({
+        prompt: prompt,
+        model: selectedTool === 'chat' ? 'gpt-4o' : 'claude',
+        max_tokens: 1000,
+        temperature: 0.7
       });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const result = await response.json();
-      setGeneratedResult(result);
+      
+      setGeneratedContent(response.content);
       setShowQuickShare(true);
+      
     } catch (error) {
       console.error('Generation failed:', error);
       alert('Failed to generate content. Please try again.');
@@ -330,8 +320,8 @@ const NeuralForgeApp = () => {
                       className="w-full bg-transparent text-white placeholder-gray-400 resize-none outline-none"
                       placeholder={`Enter your ${selectedTool === 'image' ? 'image description' : selectedTool === 'video' ? 'video concept' : selectedTool === 'code' ? 'coding request' : 'prompt'}...`}
                       rows={3}
-                      value={userPrompt}
-                      onChange={(e) => setUserPrompt(e.target.value)}
+                      value={prompt}
+                      onChange={(e) => setPrompt(e.target.value)}
                     />
                   </div>
                   
@@ -343,17 +333,20 @@ const NeuralForgeApp = () => {
                         <h4 className="text-white font-medium mb-2">Creating with AI...</h4>
                         <p className="text-gray-400">Using {aiTools.find(t => t.id === selectedTool)?.name}</p>
                       </div>
-                    ) : generatedResult ? (
+                    ) : generatedContent ? (
                       <div className="w-full h-full overflow-auto">
                         <div className="bg-white/5 rounded-lg p-4 border border-white/10">
                           <div className="flex items-center justify-between mb-3">
                             <h4 className="text-white font-medium">Generated Result</h4>
-                            <button className="p-1 hover:bg-white/10 rounded transition-colors">
+                            <button 
+                              className="p-1 hover:bg-white/10 rounded transition-colors"
+                              onClick={() => navigator.clipboard.writeText(generatedContent)}
+                            >
                               <Copy className="w-4 h-4 text-gray-400 hover:text-white" />
                             </button>
                           </div>
                           <div className="text-gray-300 whitespace-pre-wrap text-sm">
-                            {generatedResult.content || generatedResult.response || JSON.stringify(generatedResult, null, 2)}
+                            {generatedContent}
                           </div>
                         </div>
                       </div>
