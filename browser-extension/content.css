@@ -1,0 +1,67 @@
+/* Styles for the extension content */
+@keyframes neuralforge-slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes neuralforge-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+#neuralforge-tooltip {
+  animation: neuralforge-slideIn 0.3s ease-out;
+}
+
+#neuralforge-sidebar {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+#neuralforge-sidebar * {
+  box-sizing: border-box;
+}
+
+#neuralforge-sidebar input,
+#neuralforge-sidebar textarea,
+#neuralforge-sidebar select {
+  outline: none;
+}
+
+#neuralforge-sidebar input:focus,
+#neuralforge-sidebar textarea:focus,
+#neuralforge-sidebar select:focus {
+  border-color: rgba(139, 92, 246, 0.5);
+}
+
+#neuralforge-sidebar button:hover {
+  transform: translateY(-1px);
+}
+
+#neuralforge-sidebar button:active {
+  transform: translateY(0);
+}
+
+/* Scrollbar styles for the sidebar */
+#neuralforge-sidebar ::-webkit-scrollbar {
+  width: 6px;
+}
+
+#neuralforge-sidebar ::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+#neuralforge-sidebar ::-webkit-scrollbar-thumb {
+  background: rgba(139, 92, 246, 0.5);
+  border-radius: 3px;
+}
+
+#neuralforge-sidebar ::-webkit-scrollbar-thumb:hover {
+  background: rgba(139, 92, 246, 0.7);
+}

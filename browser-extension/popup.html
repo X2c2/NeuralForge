@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body {
+      width: 380px;
+      height: 600px;
+      margin: 0;
+      background: linear-gradient(135deg, #0f172a 0%, #581c87 50%, #0f172a 100%);
+      color: white;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      overflow: hidden;
+    }
+    
+    .header {
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+    
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(45deg, #8b5cf6, #ec4899);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .title {
+      font-size: 18px;
+      font-weight: bold;
+      background: linear-gradient(45deg, #ffffff, #d8b4fe);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .subtitle {
+      font-size: 12px;
+      color: #9ca3af;
+    }
+    
+    .quick-actions {
+      padding: 20px;
+    }
+    
+    .action-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    
+    .action-btn {
+      padding: 16px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: center;
+    }
+    
+    .action-btn:hover {
+      background: rgba(139, 92, 246, 0.2);
+      border-color: rgba(139, 92, 246, 0.3);
+      transform: translateY(-2px);
+    }
+    
+    .action-icon {
+      width: 24px;
+      height: 24px;
+      margin: 0 auto 8px;
+      background: linear-gradient(45deg, #8b5cf6, #ec4899);
+      border-radius: 6px;
+    }
+    
+    .action-label {
+      font-size: 12px;
+      font-weight: 500;
+    }
+    
+    .selected-text {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 16px;
+      font-size: 12px;
+      color: #d1d5db;
+      max-height: 80px;
+      overflow-y: auto;
+    }
+    
+    .result-area {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 12px;
+      margin-top: 16px;
+      min-height: 100px;
+      font-size: 12px;
+      color: #d1d5db;
+    }
+    
+    .loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: #8b5cf6;
+    }
+    
+    .spinner {
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(139, 92, 246, 0.3);
+      border-top: 2px solid #8b5cf6;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .footer {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 16px 20px;
+      background: rgba(0, 0, 0, 0.3);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      text-align: center;
+    }
+    
+    .open-app-btn {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(45deg, #8b5cf6, #ec4899);
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .open-app-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">
+      <div class="logo-icon">🧠</div>
+      <div>
+        <div class="title">NeuralForge</div>
+        <div class="subtitle">AI Assistant</div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="quick-actions">
+    <div class="action-grid">
+      <div class="action-btn" data-action="explain">
+        <div class="action-icon">💡</div>
+        <div class="action-label">Explain</div>
+      </div>
+      <div class="action-btn" data-action="summarize">
+        <div class="action-icon">📝</div>
+        <div class="action-label">Summarize</div>
+      </div>
+      <div class="action-btn" data-action="translate">
+        <div class="action-icon">🌍</div>
+        <div class="action-label">Translate</div>
+      </div>
+      <div class="action-btn" data-action="rewrite">
+        <div class="action-icon">✨</div>
+        <div class="action-label">Rewrite</div>
+      </div>
+    </div>
+    
+    <div class="selected-text" id="selectedText">
+      Select text on the page to get started
+    </div>
+    
+    <div class="result-area" id="resultArea" style="display: none;">
+      <!-- AI results will appear here -->
+    </div>
+  </div>
+  
+  <div class="footer">
+    <button class="open-app-btn" id="openApp">
+      Open NeuralForge App
+    </button>
+  </div>
+  
+  <script src="popup.js"></script>
+</body>
+</html>
