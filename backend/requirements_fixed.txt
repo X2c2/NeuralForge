@@ -1,0 +1,46 @@
+# Core Framework
+fastapi>=0.100.0,<0.105.0
+uvicorn[standard]>=0.24.0
+python-dotenv==1.0.0
+
+# Database & ORM
+sqlalchemy>=2.0.0,<3.0.0
+alembic>=1.12.0
+psycopg2-binary>=2.9.0
+asyncpg>=0.29.0
+
+# Caching & Queue
+redis>=5.0.0
+aioredis>=2.0.0
+celery>=5.3.0
+
+# Schema & Validation
+pydantic>=1.10.0,<2.0.0  # Pin to v1 for FastAPI compatibility
+python-jose[cryptography]>=3.3.0
+passlib[bcrypt]>=1.7.4
+python-multipart>=0.0.6
+bcrypt>=4.0.0
+pydantic-settings<2.0.0  # Pin to compatible version with pydantic v1
+
+# File Handling
+aiofiles>=23.2.0
+websockets>=12.0
+
+# Payment Processing
+stripe>=7.8.0
+
+# AI Provider SDKs
+openai>=0.28.0,<1.0.0  # Pin to v0.x for compatibility
+anthropic>=0.7.0,<0.8.0
+google-generativeai>=0.3.0
+elevenlabs>=0.2.24
+
+# Monitoring & Logging
+sentry-sdk>=1.38.0
+structlog>=23.2.0
+
+# Development Tools
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+black>=23.11.0
+flake8>=6.1.0
