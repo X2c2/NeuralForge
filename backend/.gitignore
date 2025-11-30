@@ -33,6 +33,7 @@ MANIFEST
 .venv/
 venv/
 env/
+neuralforge_env/
 ENV/
 env.bak/
 venv.bak/

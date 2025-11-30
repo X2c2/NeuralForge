@@ -1,0 +1,95 @@
+import { test, expect } from '@playwright/test';
+
+// Test homepage functionality
+test('homepage has correct title and features', async ({ page }) => {
+  await page.goto('/');
+  
+  // Check page title
+  await expect(page).toHaveTitle(/NeuralForge/);
+  
+  // Verify main sections are present
+  await expect(page.getByRole('heading', { name: /NeuralForge/i })).toBeVisible();
+  
+  // Check navigation elements in header
+  const nav = page.getByRole('navigation');
+  await expect(nav.getByRole('link', { name: 'AI Generation' })).toBeVisible();
+  await expect(nav.getByRole('link', { name: 'Community' })).toBeVisible();
+});
+
+// Test authentication flow
+test('login flow works correctly', async ({ page }) => {
+  await page.goto('/login');
+  
+  // Fill in login form
+  await page.getByLabel('Email').fill('test@example.com');
+  await page.getByLabel('Password').fill('testpassword');
+  
+  // Click sign in and wait for navigation
+  await Promise.all([
+    page.waitForNavigation({ waitUntil: 'networkidle' }),
+    page.getByRole('button', { name: /Sign in/i }).click()
+  ]);
+
+  await expect(page).toHaveURL(/.*dashboard/);
+});
+
+// Test AI generation feature
+test('AI generation form works', async ({ page }) => {
+  // Login first
+  await page.goto('/login');
+  await page.getByLabel('Email').fill('test@example.com');
+  await page.getByLabel('Password').fill('testpassword');
+  
+  // Click sign in and wait for navigation
+  await Promise.all([
+    page.waitForNavigation({ waitUntil: 'networkidle' }),
+    page.getByRole('button', { name: /Sign in/i }).click()
+  ]);
+
+  await expect(page).toHaveURL(/.*dashboard/);
+  
+  // Navigate to AI generation page
+  await page.goto('/ai-generation');
+  await page.waitForLoadState('networkidle');
+  
+  // Fill in generation form and submit
+  await page.getByLabel('Enter your prompt').fill('Create a test image');
+  await page.getByRole('button', { name: 'Generate' }).click();
+  
+  // Check for generation response
+  await expect(page.getByText('Generation in progress...')).toBeVisible();
+});
+
+// Test community features
+test('community post creation works', async ({ page }) => {
+  // Login first
+  await page.goto('/login');
+  await page.getByLabel('Email').fill('test@example.com');
+  await page.getByLabel('Password').fill('testpassword');
+  
+  // Click sign in and wait for navigation
+  await Promise.all([
+    page.waitForNavigation({ waitUntil: 'networkidle' }),
+    page.getByRole('button', { name: /Sign in/i }).click()
+  ]);
+
+  await expect(page).toHaveURL(/.*dashboard/);
+
+  // Navigate to community page and wait for it to load
+  await page.goto('/community');
+  await page.waitForLoadState('networkidle');
+  
+  // Fill out post form directly
+  await page.getByLabel('Title').fill('Test Post');
+  await page.getByLabel('Content').fill('This is a test post');
+  
+  // Submit post and wait for update
+  await Promise.all([
+    page.waitForLoadState('networkidle'),
+    page.getByRole('button', { name: 'Submit' }).click()
+  ]);
+  
+  // Check both title and content with specific selectors
+  await expect(page.getByRole('heading', { name: 'Test Post' })).toBeVisible();
+  await expect(page.getByText('This is a test post')).toBeVisible();
+});

@@ -1,0 +1,36 @@
+{
+  "name": "neuralforge",
+  "version": "1.0.0",
+  "description": "AI-powered platform for content creation and automation with multiple integrations.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "cd frontend && playwright test",
+    "test:ui": "cd frontend && playwright test --ui",
+    "test:debug": "cd frontend && playwright test --debug",
+    "test:visual": "cd frontend && playwright test visual.spec.ts",
+    "test:report": "cd frontend && playwright show-report"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/X2c2/NeuralForge.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/X2c2/NeuralForge/issues"
+  },
+  "homepage": "https://github.com/X2c2/NeuralForge#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.55.0",
+    "@types/node": "^24.3.0"
+  },
+  "dependencies": {
+    "playwright": "^1.55.0",
+    "playwright-core": "^1.55.0"
+  }
+}

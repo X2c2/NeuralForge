@@ -33,7 +33,7 @@ class Settings(BaseSettings):
     STRIPE_WEBHOOK_SECRET: str = os.getenv("STRIPE_WEBHOOK_SECRET", "")
     
     # CORS
-    BACKEND_CORS_ORIGINS: List[str] = None
+    BACKEND_CORS_ORIGINS: List[str] = []
     
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -51,5 +51,6 @@ class Settings(BaseSettings):
 
     class Config:
         env_file = ".env"
+        extra = "ignore"
 
 settings = Settings()

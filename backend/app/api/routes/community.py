@@ -6,7 +6,11 @@ from pydantic import BaseModel
 from app.core.security import get_current_user
 from app.db.database import get_db
 from app.models.user import User
-from app.models.community import CommunityPost, Comment, Like
+from app.models.community import (
+    CommunityPost,
+    PostComment as Comment,
+    PostLike as Like,
+)
 from app.services.community_hub import CommunityHub
 
 router = APIRouter()
@@ -170,7 +174,7 @@ async def add_comment(
         post_id=post_id,
         user_id=current_user.id,
         content=comment.content,
-        parent_id=comment.parent_id
+        parent_comment_id=comment.parent_id,
     )
     db.add(new_comment)
     post.comments_count += 1
@@ -201,12 +205,12 @@ async def get_post_comments(
         {
             "id": comment.id,
             "content": comment.content,
-            "parent_id": comment.parent_id,
-            "created_at": comment.created_at.isoformat(),
-            "user": {
-                "username": comment.user.username,
-                "avatar_url": comment.user.avatar_url
-            }
+        "parent_id": comment.parent_comment_id,
+        "created_at": comment.created_at.isoformat(),
+        "user": {
+            "username": comment.user.username,
+            "avatar_url": comment.user.avatar_url
+        }
         }
         for comment in comments
     ]
