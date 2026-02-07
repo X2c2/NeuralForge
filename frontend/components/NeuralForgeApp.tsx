@@ -139,7 +139,7 @@ const NeuralForgeApp = () => {
     }
   };
 
-  const handleQuickShare = (type) => {
+  const handleQuickShare = (type: string) => {
     const newPost = {
       id: Date.now(),
       user: { name: "You", username: "@yourname", avatar: "Y" },
