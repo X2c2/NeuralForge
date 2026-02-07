@@ -143,7 +143,7 @@ const NeuralForgeApp = () => {
     const newPost = {
       id: Date.now(),
       user: { name: "You", username: "@yourname", avatar: "Y" },
-      title: `New ${type} creation`,
+      title: `New ${type} type: string`,
       type: type,
       likes: 0,
       views: 1,
