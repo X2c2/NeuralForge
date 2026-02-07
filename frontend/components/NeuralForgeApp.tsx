@@ -13,9 +13,8 @@ import {
   EyeIcon as Eye,
   ArrowDownTrayIcon as Download,
   ArrowUpTrayIcon as Upload,
-  CrownIcon as Crown,
-  CogIcon as Settings,
-  BellIcon as Bell,
+  Cog6ToothIcon as Settings,
+    BellIcon as Bell,
   MagnifyingGlassIcon as Search,
   FunnelIcon as Filter,
   PlusIcon as Plus,
@@ -237,7 +236,7 @@ const NeuralForgeApp = () => {
               </button>
               
               <div className="flex items-center space-x-2 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 px-3 py-2 rounded-lg border border-yellow-500/30">
-                <Crown className="w-4 h-4 text-yellow-400" />
+                <Star className="w-4 h-4 text-yellow-400" />
                 <span className="text-yellow-300 font-medium">Creator</span>
               </div>
               
