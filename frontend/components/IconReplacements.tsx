@@ -1,7 +1,7 @@
 // Icon replacements for lucide-react using Heroicons
 import { 
-  TrendingUpIcon as Trending,
-  FireIcon as Fire,
+  ArrowTrendingUpIcon as Trending,  FireIcon as Fire,
+    
   ChartBarIcon,
   SparklesIcon,
   BoltIcon,
